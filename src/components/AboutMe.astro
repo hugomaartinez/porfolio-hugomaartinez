@@ -1,7 +1,18 @@
 ---
+const currentYear = new Date().getFullYear();
+const birthYear = 2003;
+const birthMonth = 7;
+const birthDay = 13;
+const today = new Date();
+let edad = currentYear - birthYear;
+if (
+  today.getMonth() < birthMonth ||
+  (today.getMonth() === birthMonth && today.getDate() < birthDay)
+) {
+  edad--;
+}
 const personalImageAlt =
   "Hugo Martínez Barros - Desarrollador de Aplicaciones Web";
-const edad = new Date().getFullYear() - 2003;
 ---
 
 <article
@@ -18,8 +29,8 @@ const edad = new Date().getFullYear() - 2003;
       Estoy interesado principalmente por el <strong
         >desarrollo back-end.</strong
       > He trabajado con tecnologías como <strong
-        >PHP, JavaScript, MySQL, Node.js</strong
-      >, entre otras.
+        >PHP, JavaScript, CSS, MySQL, Astro, Node.js y TypeScript
+      </strong>, entre otras.
     </p>
     <p>
       Me gusta aprender cosas nuevas y compartir conocimientos con otras
