@@ -2,6 +2,7 @@
 import GitHub from "./icons/GitHub.astro";
 import NextJS from "./icons/NextJS.astro";
 import Tailwind from "./icons/Tailwind.astro";
+//import Astro from "./icons/Astro.astro";
 import Link from "./icons/Link.astro";
 import LinkButton from "./LinkButton.astro";
 
@@ -16,14 +17,29 @@ const TAGS = {
     class: "bg-[#003159] text-white",
     icon: Tailwind,
   },
+  /*ASTRO: {
+    name: "Astro",
+    class: "bg-[#0f0f0f] text-white",
+    icon: Astro,
+  },*/
 };
 
 const PROJECTS = [
   {
+    title: "Portofolio - Hugo Martínez Barros",
+    description:
+      "Mi portafolio personal, donde muestro mis proyectos y habilidades",
+    link: "https://porfolio-hugomaartinez.vercel.app",
+    github: "https://github.com/hugomaartinez/porfolio-hugomaartinez",
+    image: "/projects/porfolio.png",
+    alt: "Imagen de mi portafolio personal",
+    tags: [TAGS.NEXT, TAGS.TAILWIND],
+  },
+  {
     title: "FenixZone Timers",
     description:
       "Temporizadores en tiempo real para las casas de robo de un servidor de GTA San Andreas Multiplayer",
-    link: "",
+    link: "https://fenixzone-timers.vercel.app/",
     github: "https://github.com/hugomaartinez/fenixzone-timers",
     image: "/projects/fenixzone-timers.png",
     alt: "Imagen del proyecto de los temporizadores para las casas de robo de FenixZone",
