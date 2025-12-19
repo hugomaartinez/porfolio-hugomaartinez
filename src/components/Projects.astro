@@ -2,7 +2,7 @@
 import GitHub from "./icons/GitHub.astro";
 import NextJS from "./icons/NextJS.astro";
 import Tailwind from "./icons/Tailwind.astro";
-//import Astro from "./icons/Astro.astro";
+import AstroBuild from "./icons/AstroBuild.astro";
 import Link from "./icons/Link.astro";
 import LinkButton from "./LinkButton.astro";
 
@@ -17,11 +17,11 @@ const TAGS = {
     class: "bg-[#003159] text-white",
     icon: Tailwind,
   },
-  /*ASTRO: {
+  ASTRO: {
     name: "Astro",
     class: "bg-[#0f0f0f] text-white",
-    icon: Astro,
-  },*/
+    icon: AstroBuild,
+  },
 };
 
 const PROJECTS = [
@@ -33,7 +33,7 @@ const PROJECTS = [
     github: "https://github.com/hugomaartinez/porfolio-hugomaartinez",
     image: "/projects/porfolio.png",
     alt: "Imagen de mi portafolio personal",
-    tags: [TAGS.NEXT, TAGS.TAILWIND],
+    tags: [TAGS.ASTRO, TAGS.TAILWIND],
   },
   {
     title: "FenixZone Timers",
