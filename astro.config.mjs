@@ -9,5 +9,6 @@ import cloudflare from "@astrojs/cloudflare";
 export default defineConfig({
   integrations: [tailwind(), sitemap(), robotsTxt()],
   site: 'https://hugomaartinez.dev',
+  output: 'static',
   adapter: cloudflare()
 })
