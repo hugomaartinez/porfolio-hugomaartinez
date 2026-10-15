@@ -28,44 +28,48 @@ export interface Job {
 
 export const EXPERIENCE: Job[] = [
   {
-    role: "Técnico de producto",
+    role: "Técnico de Producto",
     company: "Lidera Soluciones",
     link: "https://liderasoluciones.com",
     period: "Sep 2026 — Actualidad",
     current: true,
     summary:
-      "Formo parte del equipo de producto de Spiga+, el software con el que concesionarios, talleres e importadores gestionan su día a día.",
+      "Equipo de producto de Spiga+, el software de gestión para concesionarios, talleres e importadores del sector de la automoción.",
     highlights: [
-      "Analizo nuevas funcionalidades e integraciones y las convierto en requisitos funcionales claros para el equipo de desarrollo.",
-      "Preparo la documentación técnica y realizo pruebas técnicas y funcionales antes de cada entrega.",
-      "Trabajo con clientes y proveedores para detectar incidencias y proponer mejoras en el producto.",
+      "Elaboración de análisis técnicos de nuevos desarrollos, que sirven de base al equipo de programación para su implementación.",
+      "Análisis de integraciones con marcas del sector de la automoción, definiendo el alcance y los requisitos técnicos de cada desarrollo.",
     ],
-    tags: ["Análisis funcional", "Requisitos", "Integraciones", "API REST", "SOAP", "Testing"],
+    tags: ["Análisis técnico", "Integraciones", "Requisitos", "Automoción"],
   },
+  // Textos de DigitalizaT y RecambiosDiez sacados del CV (hugomaartinez-cv/src/data/cv.ts)
   {
-    role: "Desarrollador Full-Stack",
+    role: "Desarrollador Web Full-Stack",
     company: "DigitalizaT Solutions",
     link: "https://digitalizat.com",
     period: "Oct 2024 — Jul 2026",
-    location: "Vigo",
+    location: "Vigo, España",
     highlights: [
-      "Lideré el diseño y desarrollo del módulo de expedientes de vehículo nuevo y de ocasión (VO/VN) para BYD e Hyundai, que abrió la puerta a nuevos concesionarios.",
-      "Integración con Renault para sincronizar el stock de vehículos de ocasión de los talleres, con procesos diarios, mensuales y bajo demanda.",
-      "Microservicios para actualizar el stock de los concesionarios de BYD España y automatizar la impresión de facturas.",
-      "Migración progresiva de pantallas legacy (JSP y jQuery) a Angular y optimización del backend en Java y MariaDB.",
+      "Desarrollo de una integración con Renault para actualizar el stock de vehículos de ocasión de los talleres conectados a la plataforma, con procesos diarios, mensuales y bajo demanda.",
+      "Lideré el diseño y desarrollo del nuevo módulo de expedientes VO/VN para BYD e Hyundai, definiendo la estructura de datos, reglas de negocio y configuración de conceptos del expediente.",
+      "El módulo permitió gestionar expedientes de vehículos nuevos y de ocasión, eliminó una limitación clave del producto y facilitó la entrada de nuevos concesionarios, con impacto positivo en la facturación.",
+      "Colaboración en la integración de microservicios para actualizar el stock de concesionarios de BYD España y para automatizar procesos de impresión de facturas.",
+      "Evolución de la arquitectura backend en Java y MariaDB, optimizando consultas y procesos críticos vinculados a la gestión de vehículos y expedientes.",
+      "Desarrollo de interfaces dinámicas con Angular y migración progresiva de pantallas legacy basadas en JSP, JavaScript nativo y jQuery.",
+      "Diseño y despliegue de un CMS con Hugo y PayloadCMS para redes de talleres, además de integraciones con APIs externas para procesos operativos.",
     ],
-    tags: ["Java", "Spring Boot", "Angular", "MariaDB", "MongoDB", "Kafka", "Docker"],
+    tags: ["Java", "Spring Boot", "Angular", "MariaDB", "MongoDB", "Kafka", "PayloadCMS", "Microservicios", "Docker"],
   },
   {
-    role: "Desarrollador Back-end",
+    role: "Desarrollador Web Back-end",
     company: "RecambiosDiez",
     link: "https://recambiosdiez.com",
     period: "Feb 2024 — Sep 2024",
     location: "Valença, Portugal",
     highlights: [
-      "Módulos a medida para PrestaShop y aplicaciones internas para agilizar el trabajo diario del equipo.",
-      "Endpoints REST para extraer y analizar datos operativos y automatizar tareas recurrentes.",
-      "Primeros pasos de un ERP propio para sustituir el front-end de PrestaShop y ganar rendimiento.",
+      "Desarrollo de módulos personalizados para la plataforma PrestaShop y creación de aplicaciones a medida para la optimización de procesos internos.",
+      "Diseño y despliegue de endpoints para la extracción y análisis de datos operativos, integrando APIs REST para automatizar tareas recurrentes.",
+      "Desarrollo inicial de un sistema ERP propio destinado a sustituir el front-end de PrestaShop, enfocado en mejorar el rendimiento y la escalabilidad de la plataforma.",
+      "Implementación de soluciones con PHP, MySQL y JavaScript para adaptar el software a necesidades internas de negocio.",
     ],
     tags: ["PHP", "MySQL", "PrestaShop", "JavaScript"],
   },
@@ -86,17 +90,17 @@ export const PROJECTS: Project[] = [
   {
     title: "Courtly",
     description:
-      "Gestión integral de pistas deportivas: reservas, estadísticas y administración en tiempo real para clubes.",
+      "Gestión integral de pistas deportivas. Reservas, estadísticas y administración en tiempo real.",
     link: "https://app.hugomaartinez.dev",
     image: "/projects/courtly.png",
-    alt: "Página de inicio de Courtly, aplicación de gestión de pistas deportivas",
+    alt: "Panel de control de la aplicación Courtly",
     tags: ["Next.js", "Tailwind CSS"],
     featured: true,
   },
   {
     title: "Curriculum Vitae",
     description:
-      "Currículum interactivo y minimalista. Multilingüe (ES, EN, GL, PT) y optimizado para SEO, rendimiento e impresión.",
+      "Currículum profesional interactivo y minimalista. Multilingüe (ES, EN, GL, PT) y optimizado para SEO, rendimiento e impresión.",
     link: "https://cv.hugomaartinez.dev",
     github: "https://github.com/hugomaartinez/hugomaartinez-cv",
     image: "/projects/cv.png",
@@ -106,21 +110,21 @@ export const PROJECTS: Project[] = [
   {
     title: "FenixZone Timers",
     description:
-      "Temporizadores en tiempo real para las casas de robo de un servidor de GTA San Andreas Multiplayer.",
+      "Temporizadores en tiempo real para las casas de robo de un servidor de GTA San Andreas Multiplayer",
     link: "https://fenixzone-timers.vercel.app/",
     github: "https://github.com/hugomaartinez/fenixzone-timers",
     image: "/projects/fenixzone-timers.png",
-    alt: "Panel con los temporizadores de las casas de robo de FenixZone",
+    alt: "Imagen del proyecto de los temporizadores para las casas de robo de FenixZone",
     tags: ["Next.js", "Tailwind CSS"],
   },
   {
-    title: "Este portfolio",
+    title: "Portfolio - Hugo Martínez Barros",
     description:
-      "La web que estás viendo: diseño propio, modo claro y oscuro, sin frameworks de cliente y con datos estructurados para SEO.",
+      "Mi portafolio personal, donde muestro mis proyectos y habilidades",
     link: "https://hugomaartinez.dev",
     github: "https://github.com/hugomaartinez/porfolio-hugomaartinez",
     image: "/projects/porfolio.png",
-    alt: "Captura de pantalla de mi portfolio personal",
+    alt: "Imagen de mi portafolio personal",
     tags: ["Astro", "Tailwind CSS"],
   },
 ];
@@ -129,11 +133,10 @@ export const SKILLS: { group: string; items: string[] }[] = [
   {
     group: "Producto",
     items: [
-      "Análisis funcional",
+      "Análisis técnico",
+      "Integraciones",
       "Requisitos",
       "Documentación técnica",
-      "Pruebas funcionales",
-      "Integraciones",
     ],
   },
   {
