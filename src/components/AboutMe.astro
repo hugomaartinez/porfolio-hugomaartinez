@@ -1,56 +1,87 @@
 ---
-const currentYear = new Date().getFullYear();
-const birthYear = 2003;
-const birthMonth = 7;
-const birthDay = 13;
+import { EDUCATION, LANGUAGES, PROFILE } from "@/data/portfolio";
+
+const { year, month, day } = PROFILE.birthDate;
 const today = new Date();
-let edad = currentYear - birthYear;
-if (
-  today.getMonth() < birthMonth ||
-  (today.getMonth() === birthMonth && today.getDate() < birthDay)
-) {
+let edad = today.getFullYear() - year;
+if (today.getMonth() < month || (today.getMonth() === month && today.getDate() < day)) {
   edad--;
 }
-const personalImageAlt =
-  "Hugo Martínez Barros - Desarrollador de Aplicaciones Web";
 ---
 
-<article
-  class="flex flex-col items-center justify-center gap-8 text-gray-700 dark:text-gray-300 md:flex-row"
->
-  <div
-    class="[&>p]:mb-4 [&>p>strong]:text-blue-600 dark:[&>p>strong]:text-sky-300 [&>p>strong]:font-normal [&>p>strong]:font-mono text-pretty order-2 md:order-1"
-  >
-    <p>
-      Me llamo Hugo Martínez Barros, tengo {edad} años de edad, actualmente vivo en
-      <strong>Gondomar, Galicia.</strong>
-    </p>
-    <p>
-      Estoy interesado principalmente por el <strong
-        >desarrollo back-end.</strong
-      > He trabajado con tecnologías como <strong
-        >PHP, JavaScript, Java, Angular, CSS, MySQL, Astro, Node.js y TypeScript
-      </strong>, entre otras.
-    </p>
-    <p>
-      Me gusta aprender cosas nuevas. Actualmente estoy profundizando en el
-      campo de los datos con un <strong
-        >Curso de Especialización en Inteligencia Artificial y Big Data</strong
-      >.
-    </p>
-    <p>
-      Me considero una persona <strong
-        >responsable, organizada y con gran capacidad de trabajo en equipo</strong
-      >.
-    </p>
+<div class="grid gap-12 lg:grid-cols-[1fr_300px] lg:gap-16">
+  <div>
+    <div
+      data-reveal
+      class="space-y-5 text-pretty text-lg leading-relaxed text-muted [&_strong]:font-medium [&_strong]:text-fg"
+    >
+      <p>
+        Me llamo Hugo, tengo {edad} años y vivo en <strong>Gondomar, Galicia</strong>. Empecé como
+        desarrollador back-end y, tras más de dos años construyendo software para el sector de la
+        automoción, ahora trabajo en el lado de <strong>producto</strong>: entender qué necesitan
+        concesionarios y talleres y asegurarme de que lo que se construye lo resuelve.
+      </p>
+      <p>
+        Haber programado me ayuda a hablar el mismo idioma que el equipo de desarrollo. He trabajado con
+        <strong>Java, Spring Boot, Angular, PHP, TypeScript, MariaDB y MongoDB</strong>, entre otras
+        tecnologías.
+      </p>
+      <p>
+        Me gusta aprender cosas nuevas: he completado un <strong
+          >Curso de Especialización en Inteligencia Artificial y Big Data</strong
+        >, donde trabajé con LLMs, RAG, Kafka, Hadoop y visión por computador.
+      </p>
+      <p>
+        Me considero una persona <strong>responsable, organizada y con gran capacidad de trabajo en equipo</strong>.
+      </p>
+    </div>
+
+    <div class="mt-12 grid gap-5 sm:grid-cols-[1.4fr_1fr]">
+      <div data-reveal class="card p-6">
+        <h3 class="font-mono text-xs uppercase tracking-[0.18em] text-muted">Formación</h3>
+        <ol class="mt-5 space-y-5">
+          {
+            EDUCATION.map((item) => (
+              <li>
+                <p class="font-medium leading-snug">{item.title}</p>
+                <p class="mt-1 text-sm text-muted">
+                  {item.center} · <span class="font-mono text-xs">{item.period}</span>
+                </p>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+      <div data-reveal class="card p-6" style="--delay: 90ms">
+        <h3 class="font-mono text-xs uppercase tracking-[0.18em] text-muted">Idiomas</h3>
+        <dl class="mt-5 space-y-3">
+          {
+            LANGUAGES.map((language) => (
+              <div class="flex items-baseline justify-between gap-4 border-b border-dashed border-line/10 pb-3 last:border-0 last:pb-0">
+                <dt class="font-medium">{language.name}</dt>
+                <dd class="font-mono text-xs text-muted">{language.level}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+    </div>
   </div>
 
-  <img
-    width="200"
-    height="200"
-    src="/me.jpeg"
-    alt={personalImageAlt}
-    class="order-1 object-cover w-64 h-full p-1 md:order-2 rotate-3 lg:p-2 lg:w-64 aspect-square rounded-2xl bg-black/20 dark:bg-sky-500/5 ring-1 ring-black/70 dark:ring-white/20"
-    style="object-position: 50% 50%"
-  />
-</article>
+  <figure data-reveal class="order-first mx-auto w-full max-w-[260px] lg:order-none lg:max-w-none">
+    <div class="-rotate-2 rounded-[1.5rem] border border-line/10 bg-surface p-2.5 shadow-xl shadow-black/10 lg:sticky lg:top-28">
+      <img
+        src="/me.jpeg"
+        alt="Hugo Martínez Barros sonriendo"
+        width="800"
+        height="800"
+        loading="lazy"
+        decoding="async"
+        class="aspect-square w-full rounded-[1.1rem] object-cover"
+      />
+      <figcaption class="px-1.5 pb-1 pt-3 text-center font-mono text-[11px] text-muted">
+        Gondomar · Vigo · Galicia
+      </figcaption>
+    </div>
+  </figure>
+</div>

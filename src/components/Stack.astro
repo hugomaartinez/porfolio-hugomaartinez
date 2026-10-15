@@ -1,0 +1,21 @@
+---
+import { SKILLS } from "@/data/portfolio";
+---
+
+<div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+  {
+    SKILLS.map((skill, index) => (
+      <div data-reveal data-spotlight class="card p-6" style={`--delay: ${index * 80}ms`}>
+        <h3 class="flex items-baseline justify-between">
+          <span class="font-semibold tracking-tight">{skill.group}</span>
+          <span class="font-mono text-xs text-muted/70">0{index + 1}</span>
+        </h3>
+        <ul class="mt-5 flex flex-wrap gap-1.5">
+          {skill.items.map((item) => (
+            <li class="chip">{item}</li>
+          ))}
+        </ul>
+      </div>
+    ))
+  }
+</div>

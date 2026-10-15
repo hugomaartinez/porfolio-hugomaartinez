@@ -2,47 +2,61 @@
 import Layout from "@/layouts/Layout.astro";
 
 import AboutMe from "@/components/AboutMe.astro";
-import Briefcase from "@/components/icons/Briefcase.astro";
-import CodeIcon from "@/components/icons/Code.astro";
+import Contact from "@/components/Contact.astro";
 import Experience from "@/components/Experience.astro";
-import ProfileCheck from "@/components/icons/ProfileCheck.astro";
+import Hero from "@/components/Hero.astro";
 import Projects from "@/components/Projects.astro";
 import SectionContainer from "@/components/SectionContainer.astro";
-import Hero from "@/components/Hero.astro";
-import TitleSection from "@/components/TitleSection.astro";
+import SectionHeader from "@/components/SectionHeader.astro";
+import Stack from "@/components/Stack.astro";
 ---
 
 <Layout
-  title="Porfolio de Hugo Martínez Barros - Desarrollador de Aplicaciones Web"
-  description=""
+  title="Hugo Martínez Barros · Técnico de producto y desarrollador"
+  description="Portfolio de Hugo Martínez Barros, técnico de producto en Lidera Soluciones y desarrollador Java y Angular con experiencia en software para automoción."
 >
-  <main class="px-4">
-    <SectionContainer class="py-16 md:py-36">
+  <main id="contenido" class="px-4">
+    <SectionContainer id="inicio" class="pb-24 pt-32 sm:pt-40 lg:pb-32">
       <Hero />
     </SectionContainer>
-    <div class="space-y-24">
+
+    <div class="space-y-28 sm:space-y-36">
       <SectionContainer id="experiencia">
-        <TitleSection>
-          <Briefcase class="size-8" />
-          Experiencia laboral
-        </TitleSection>
+        <SectionHeader
+          index="01"
+          kicker="Experiencia"
+          title="Del código al producto"
+          lead="Más de dos años desarrollando software para concesionarios, talleres y recambios. Ahora, al otro lado: definiendo qué se construye y comprobando que funciona."
+        />
         <Experience />
       </SectionContainer>
 
       <SectionContainer id="proyectos">
-        <TitleSection>
-          <CodeIcon class="size-7" />
-          Proyectos
-        </TitleSection>
+        <SectionHeader
+          index="02"
+          kicker="Proyectos"
+          title="Cosas que he construido"
+          lead="Proyectos personales en los que pruebo ideas, tecnologías y diseño de principio a fin."
+        />
         <Projects />
       </SectionContainer>
 
+      <SectionContainer id="stack">
+        <SectionHeader
+          index="03"
+          kicker="Stack"
+          title="Herramientas con las que trabajo"
+        />
+        <Stack />
+      </SectionContainer>
+
       <SectionContainer id="sobre-mi">
-        <TitleSection>
-          <ProfileCheck class="size-8" />
-          Sobre mí
-        </TitleSection>
+        <SectionHeader index="04" kicker="Sobre mí" title="Un poco más de mí" />
         <AboutMe />
+      </SectionContainer>
+
+      <SectionContainer id="contacto">
+        <Contact />
       </SectionContainer>
     </div>
   </main>

@@ -2,43 +2,36 @@
 import ThemeToggle from "./ThemeToggle.astro";
 
 const navItems = [
-  {
-    title: "Experiencia",
-    label: "experiencia",
-    url: "/#experiencia",
-  },
-  {
-    title: "Proyectos",
-    label: "proyectos",
-    url: "/#proyectos",
-  },
-  {
-    title: "Sobre mí",
-    label: "sobre-mi",
-    url: "/#sobre-mi",
-  },
-  {
-    title: "Contacto",
-    label: "contacto",
-    url: "mailto:hugo.martinez.ba2003@gmail.com",
-  },
+  { title: "Experiencia", id: "experiencia" },
+  { title: "Proyectos", id: "proyectos" },
+  { title: "Stack", id: "stack", desktopOnly: true },
+  { title: "Sobre mí", id: "sobre-mi" },
+  { title: "Contacto", id: "contacto", desktopOnly: true },
 ];
 ---
 
-<header
-  class="fixed top-0 z-10 flex items-center justify-center w-full mx-auto mt-2"
->
+<header class="fixed inset-x-0 top-3 z-50 flex justify-center px-4">
   <nav
-    class="flex px-3 text-sm font-medium rounded-full text-gray-600 dark:text-gray-200 justify-center items-center"
+    aria-label="Principal"
+    class="flex items-center gap-0.5 rounded-full border border-line/10 bg-surface/75 p-1 text-[13px] shadow-lg shadow-black/[0.04] backdrop-blur-xl sm:text-sm"
   >
+    <a
+      href="#inicio"
+      aria-label="Ir al inicio"
+      class="mr-1 grid size-8 shrink-0 place-items-center rounded-full bg-fg text-[11px] font-bold tracking-tight text-bg transition hover:scale-105"
+      >HM</a
+    >
     {
-      navItems.map((link) => (
+      navItems.map((item) => (
         <a
-          class="relative block px-2 py-2 transition hover:text-blue-500 dark:hover:text-blue-500"
-          aria-label={link.label}
-          href={link.url}
+          href={`#${item.id}`}
+          data-nav={item.id}
+          class:list={[
+            "nav-link rounded-full px-2.5 py-1.5 text-muted transition-colors hover:text-fg sm:px-3",
+            item.desktopOnly && "hidden sm:block",
+          ]}
         >
-          {link.title}
+          {item.title}
         </a>
       ))
     }
@@ -46,65 +39,32 @@ const navItems = [
   </nav>
 </header>
 
-<script>
-  document.addEventListener("astro:page-load", () => {
-    const sections = document.querySelectorAll("section");
-    const navItems = document.querySelectorAll("header nav a");
-
-    const callback = (entries: any[]) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          navItems.forEach((item) => {
-            if (item.getAttribute("aria-label") == entry.target.id) {
-              item.classList.add("text-blue-500");
-            } else {
-              item.classList.remove("text-blue-500");
-            }
-          });
-        }
-      });
-    };
-
-    const observer = new IntersectionObserver(callback, {
-      root: null,
-      rootMargin: "0px",
-      threshold: 0.3,
-    });
-
-    sections.forEach((section) => {
-      observer.observe(section);
-    });
-
-    // Cleanup function
-    document.onvisibilitychange = () => {
-      if (document.visibilityState === "hidden") {
-        observer.disconnect();
-      } else {
-        sections.forEach((section) => {
-          observer.observe(section);
-        });
-      }
-    };
-  });
-</script>
-
 <style>
-  nav {
-    animation: nav-shadown 1s linear both;
-    animation-timeline: scroll();
-    animation-range: 0 100px;
-  }
-
-  nav {
-    @apply dark:bg-gray-800/90 bg-white/50;
-  }
-
-  @keyframes nav-shadown {
-    0% {
-      @apply dark:bg-gray-800/0 bg-white/0;
-    }
-    to {
-      @apply shadow-lg ring-1 backdrop-blur ring-white/10;
-    }
+  .nav-link[aria-current] {
+    @apply bg-line/[0.07] text-fg;
   }
 </style>
+
+<script>
+  // Marca en el menú la sección que se está viendo
+  const links = document.querySelectorAll<HTMLAnchorElement>("[data-nav]");
+  // El inicio no tiene enlace propio, pero lo observamos para desmarcar el menú al volver arriba
+  const sections = ["inicio", ...[...links].map((link) => link.dataset.nav ?? "")]
+    .map((id) => document.getElementById(id))
+    .filter((section): section is HTMLElement => section !== null);
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        links.forEach((link) => {
+          if (link.dataset.nav === entry.target.id) link.setAttribute("aria-current", "location");
+          else link.removeAttribute("aria-current");
+        });
+      }
+    },
+    { rootMargin: "-45% 0px -50% 0px" },
+  );
+
+  sections.forEach((section) => observer.observe(section));
+</script>

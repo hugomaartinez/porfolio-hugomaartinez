@@ -1,0 +1,77 @@
+---
+import Icon from "./Icon.astro";
+import { PROFILE } from "@/data/portfolio";
+---
+
+<div data-reveal class="card relative overflow-hidden px-6 py-14 text-center sm:px-14 sm:py-20">
+  <div
+    aria-hidden="true"
+    class="pointer-events-none absolute -bottom-40 left-1/2 h-80 w-[700px] -translate-x-1/2 rounded-full bg-accent/20 blur-3xl"
+  >
+  </div>
+
+  <p class="relative font-mono text-xs uppercase tracking-[0.18em] text-accent">05 — Contacto</p>
+  <h2 class="relative mt-5 text-balance text-4xl font-semibold tracking-[-0.04em] sm:text-6xl">
+    ¿Hablamos<span class="text-accent">?</span>
+  </h2>
+  <p class="relative mx-auto mt-5 max-w-lg text-pretty text-muted sm:text-lg">
+    Si tienes una propuesta, una idea o simplemente quieres comentar algo, escríbeme y te respondo.
+  </p>
+
+  <div class="relative mt-10 flex flex-wrap items-center justify-center gap-3">
+    <a href={`mailto:${PROFILE.email}`} class="btn btn-primary max-w-full !px-5 !py-3 sm:text-base">
+      <Icon name="mail" class="size-4 shrink-0" />
+      <span class="truncate">{PROFILE.email}</span>
+    </a>
+    <button type="button" id="copy-email" data-email={PROFILE.email} class="btn btn-ghost !py-3">
+      <span class="copy-idle inline-flex items-center gap-2"><Icon name="copy" /> Copiar</span>
+      <span class="copy-done hidden items-center gap-2 text-emerald-600 dark:text-emerald-400"
+        ><Icon name="check" /> ¡Copiado!</span
+      >
+    </button>
+  </div>
+
+  <div class="relative mt-8 flex justify-center gap-6 text-sm text-muted">
+    <a href={PROFILE.linkedin} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 transition hover:text-fg">
+      <Icon name="linkedin" /> LinkedIn
+    </a>
+    <a href={PROFILE.github} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 transition hover:text-fg">
+      <Icon name="github" /> GitHub
+    </a>
+    <a href={PROFILE.cv} target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 transition hover:text-fg">
+      <Icon name="file" /> CV
+    </a>
+  </div>
+  <p class="sr-only" aria-live="polite" id="copy-status"></p>
+</div>
+
+<style>
+  #copy-email.copied .copy-idle {
+    display: none;
+  }
+
+  #copy-email.copied .copy-done {
+    display: inline-flex;
+  }
+</style>
+
+<script>
+  const button = document.getElementById("copy-email");
+  const status = document.getElementById("copy-status");
+  let timeout: ReturnType<typeof setTimeout> | undefined;
+
+  button?.addEventListener("click", async () => {
+    const email = button.dataset.email ?? "";
+    try {
+      await navigator.clipboard.writeText(email);
+    } catch {
+      // Sin acceso al portapapeles: abrimos el cliente de correo
+      window.location.href = `mailto:${email}`;
+      return;
+    }
+    button.classList.add("copied");
+    if (status) status.textContent = "Correo copiado al portapapeles";
+    clearTimeout(timeout);
+    timeout = setTimeout(() => button.classList.remove("copied"), 2000);
+  });
+</script>

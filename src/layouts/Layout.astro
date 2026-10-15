@@ -3,7 +3,7 @@ import "@fontsource-variable/onest";
 
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
-import { ClientRouter } from "astro:transitions";
+import { EDUCATION, EXPERIENCE, PROFILE, SKILLS } from "@/data/portfolio";
 
 interface Props {
   title: string;
@@ -11,131 +11,285 @@ interface Props {
 }
 
 const { description, title } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL("/projects/porfolio.png", Astro.site).href;
+const currentJob = EXPERIENCE.find((job) => job.current);
+
+// Datos estructurados para Google (https://schema.org/ProfilePage)
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  url: canonical,
+  mainEntity: {
+    "@type": "Person",
+    name: PROFILE.name,
+    url: PROFILE.site,
+    image: new URL("/me.jpeg", Astro.site).href,
+    email: `mailto:${PROFILE.email}`,
+    jobTitle: currentJob?.role,
+    worksFor: currentJob && {
+      "@type": "Organization",
+      name: currentJob.company,
+      url: currentJob.link,
+    },
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Gondomar",
+      addressRegion: "Galicia",
+      addressCountry: "ES",
+    },
+    alumniOf: EDUCATION.map((item) => ({
+      "@type": "EducationalOrganization",
+      name: item.center,
+    })),
+    knowsAbout: SKILLS.flatMap((group) => group.items),
+    sameAs: [PROFILE.linkedin, PROFILE.github, PROFILE.cv],
+  },
+};
 ---
 
 <!doctype html>
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
     <meta name="description" content={description} />
-    <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#f7f6f3" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0a0a0b" media="(prefers-color-scheme: dark)" />
 
     <!-- SEO & Metatags -->
-    <link rel="canonical" href="https://hugomaartinez.dev" />
+    <link rel="canonical" href={canonical} />
     <meta name="robots" content="index, follow" />
-    <meta name="author" content="Hugo Martínez Barros" />
+    <meta name="author" content={PROFILE.name} />
 
     <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://hugomaartinez.dev" />
+    <meta property="og:type" content="profile" />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:url" content={canonical} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta
-      property="og:image"
-      content="https://hugomaartinez.dev/projects/porfolio.png"
-    />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="713" />
 
     <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://hugomaartinez.dev" />
-    <meta property="twitter:title" content={title} />
-    <meta property="twitter:description" content={description} />
-    <meta
-      property="twitter:image"
-      content="https://hugomaartinez.dev/projects/porfolio.png"
-    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonical} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
 
-    <title>{title}</title>
-    <ClientRouter />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+    <!-- Aplica el tema antes de pintar para evitar el parpadeo -->
+    <script is:inline>
+      (() => {
+        let stored = null;
+        try {
+          stored = localStorage.getItem("theme");
+        } catch {}
+        const dark =
+          stored === "dark" || stored === "light"
+            ? stored === "dark"
+            : window.matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.classList.toggle("dark", dark);
+        document.documentElement.classList.add("js");
+      })();
+    </script>
   </head>
 
-  <body class="relative text-black dark:text-white">
-    <div
-      class="absolute top-0 bottom-0 z-[-2] min-h-screen w-full bg-neutral-50 dark:bg-neutral-950
-      bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(217,216,255,0.5),rgba(255,255,255,0.9))]
-      dark:bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))]"
-    >
+  <body class="relative min-h-screen bg-bg font-sans text-fg antialiased">
+    <div aria-hidden="true" class="backdrop pointer-events-none absolute inset-x-0 top-0 -z-10 h-[900px] overflow-hidden">
+      <div class="backdrop-grid absolute inset-0"></div>
+      <div class="backdrop-glow absolute -top-48 left-1/2 h-[560px] w-[900px] -translate-x-1/2 rounded-full"></div>
     </div>
+
+    <a
+      href="#contenido"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-fg focus:px-4 focus:py-2 focus:text-bg"
+      >Saltar al contenido</a
+    >
     <Header />
     <slot />
     <Footer />
+
     <style is:global>
       :root {
-        color-scheme: light dark;
+        color-scheme: light;
+        --bg: 247 246 243;
+        --surface: 255 255 255;
+        --fg: 17 17 19;
+        --muted: 92 92 102;
+        --line: 17 17 19;
+        --accent: 214 72 10;
+        --accent-ink: 255 255 255;
+      }
+
+      :root.dark {
+        color-scheme: dark;
+        --bg: 10 10 11;
+        --surface: 20 20 22;
+        --fg: 237 237 239;
+        --muted: 155 155 166;
+        --line: 237 237 239;
+        --accent: 255 128 64;
+        --accent-ink: 10 10 11;
       }
 
       html {
-        font-family: "Onest Variable", system-ui, sans-serif;
         scroll-behavior: smooth;
+        -webkit-text-size-adjust: 100%;
       }
 
       body {
-        color: rgba(17, 17, 17, 0.9);
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-        overscroll-behavior: none;
+        overscroll-behavior-y: none;
+      }
+
+      ::selection {
+        background: rgb(var(--accent) / 0.25);
+      }
+
+      :focus-visible {
+        outline: 2px solid rgb(var(--accent));
+        outline-offset: 3px;
+        border-radius: 6px;
+      }
+
+      /* Fondo: rejilla de puntos que se desvanece + halo de color */
+      .backdrop-grid {
+        background-image: radial-gradient(rgb(var(--fg) / 0.13) 1px, transparent 1px);
+        background-size: 22px 22px;
+        mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, #000 30%, transparent 100%);
+      }
+
+      .backdrop-glow {
+        background: radial-gradient(closest-side, rgb(var(--accent) / 0.16), transparent);
+        filter: blur(20px);
+      }
+
+      /* Botones y etiquetas reutilizables */
+      .btn {
+        @apply inline-flex items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition duration-200 active:scale-[0.97];
+      }
+
+      .btn-primary {
+        @apply bg-accent text-accent-ink hover:brightness-110;
+        box-shadow: 0 10px 30px -12px rgb(var(--accent) / 0.7);
+      }
+
+      .btn-ghost {
+        @apply border border-line/15 bg-surface/60 text-fg backdrop-blur hover:border-line/30 hover:bg-surface;
+      }
+
+      .chip {
+        @apply inline-flex items-center rounded-md border border-line/10 bg-line/[0.03] px-2 py-0.5 font-mono text-[11.5px] text-muted;
+      }
+
+      /* Tarjeta con un foco de luz que sigue al ratón */
+      @property --spot {
+        syntax: "<number>";
+        inherits: false;
+        initial-value: 0;
+      }
+
+      .card {
+        position: relative;
+        border-radius: 1.25rem;
+        border: 1px solid rgb(var(--line) / 0.09);
+        background-color: rgb(var(--surface) / 0.72);
+        background-image: radial-gradient(
+          520px circle at var(--x, 50%) var(--y, 50%),
+          rgb(var(--accent) / calc(var(--spot) * 0.09)),
+          transparent 45%
+        );
+        transition:
+          --spot 0.35s ease,
+          border-color 0.35s ease,
+          transform 0.35s ease;
+      }
+
+      .card-highlight {
+        border-color: rgb(var(--accent) / 0.25);
+        box-shadow: 0 24px 60px -36px rgb(var(--accent) / 0.55);
+      }
+
+      .card[data-spotlight]:hover {
+        --spot: 1;
+        border-color: rgb(var(--accent) / 0.28);
+      }
+
+      /* Aparición suave al hacer scroll (solo si hay JS) */
+      .js [data-reveal] {
+        opacity: 0;
+        transform: translateY(18px);
+        transition:
+          opacity 0.8s cubic-bezier(0.2, 0.7, 0.2, 1),
+          transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+        transition-delay: var(--delay, 0ms);
+      }
+
+      .js [data-reveal].is-visible {
+        opacity: 1;
+        transform: none;
+      }
+
+      /* Cambio de tema con un círculo que se expande desde el botón */
+      ::view-transition-old(root),
+      ::view-transition-new(root) {
+        animation: none;
+        mix-blend-mode: normal;
       }
 
       @media (prefers-reduced-motion: reduce) {
         html {
           scroll-behavior: auto;
         }
-      }
 
-      @media (prefers-color-scheme: dark) {
-        body {
-          color: rgba(255, 255, 255, 0.9);
+        .js [data-reveal] {
+          opacity: 1;
+          transform: none;
+          transition: none;
         }
-      }
 
-      #header-nav {
-        animation: blur linear both 0.5s;
-        animation-timeline: scroll();
-        animation-range: 0 500px;
-      }
-
-      @keyframes blur {
-        to {
-          backdrop-filter: blur(20px);
-          border-width: 1px;
-          border-color: rgba(0, 0, 0);
-          padding: 0.25rem 0.75rem;
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          background-color: rgb(229, 229, 229);
-          border-radius: 9999px;
-        }
-      }
-
-      @media (prefers-color-scheme: dark) {
-        @keyframes blur {
-          from {
-            border: 0px;
-          }
-          to {
-            box-shadow:
-              0px 5px 50px -5px rgba(0, 0, 0, 0.1),
-              0px 0px 0 1px rgba(0, 0, 0, 0.3);
-            background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(20px);
-            border-width: 1px;
-            border-color: rgba(0, 0, 0);
-            padding-left: 0.75rem;
-            padding-right: 0.75rem;
-            padding-top: 0.25rem;
-            padding-bottom: 0.25rem;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            background-color: rgba(0, 0, 0, 0.3);
-            border-radius: 9999px;
-          }
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
         }
       }
     </style>
+
+    <script>
+      const revealItems = document.querySelectorAll<HTMLElement>("[data-reveal]");
+
+      if ("IntersectionObserver" in window) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (!entry.isIntersecting) continue;
+              entry.target.classList.add("is-visible");
+              observer.unobserve(entry.target);
+            }
+          },
+          { rootMargin: "0px 0px -8% 0px" },
+        );
+        revealItems.forEach((item) => observer.observe(item));
+      } else {
+        revealItems.forEach((item) => item.classList.add("is-visible"));
+      }
+
+      document.querySelectorAll<HTMLElement>("[data-spotlight]").forEach((card) => {
+        card.addEventListener("pointermove", (event) => {
+          const rect = card.getBoundingClientRect();
+          card.style.setProperty("--x", `${event.clientX - rect.left}px`);
+          card.style.setProperty("--y", `${event.clientY - rect.top}px`);
+        });
+      });
+    </script>
   </body>
 </html>

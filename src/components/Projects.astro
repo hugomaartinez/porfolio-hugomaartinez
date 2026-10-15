@@ -1,125 +1,91 @@
 ---
-import GitHub from "./icons/GitHub.astro";
-import NextJS from "./icons/NextJS.astro";
-import Tailwind from "./icons/Tailwind.astro";
-import AstroBuild from "./icons/AstroBuild.astro";
-import Link from "./icons/Link.astro";
-import LinkButton from "./LinkButton.astro";
+import Icon from "./Icon.astro";
+import { PROJECTS } from "@/data/portfolio";
 
-const TAGS = {
-  NEXT: {
-    name: "Next.js",
-    class: "bg-black text-white",
-    icon: NextJS,
-  },
-  TAILWIND: {
-    name: "Tailwind CSS",
-    class: "bg-[#003159] text-white",
-    icon: Tailwind,
-  },
-  ASTRO: {
-    name: "Astro",
-    class: "bg-[#0f0f0f] text-white",
-    icon: AstroBuild,
-  },
-};
-
-const PROJECTS = [
-  {
-    title: "Curriculum Vitae",
-    description:
-      "Currículum profesional interactivo y minimalista. Multilingüe (ES, EN, GL, PT) y optimizado para SEO, rendimiento e impresión.",
-    link: "https://cv.hugomaartinez.dev",
-    github: "https://github.com/hugomaartinez/hugomaartinez-cv",
-    image: "/projects/cv.png",
-    alt: "Captura de pantalla de mi currículum vitae online",
-    tags: [TAGS.ASTRO],
-  },
-  {
-    title: "Portofolio - Hugo Martínez Barros",
-    description:
-      "Mi portafolio personal, donde muestro mis proyectos y habilidades",
-    link: "https://hugomaartinez.dev",
-    github: "https://github.com/hugomaartinez/porfolio-hugomaartinez",
-    image: "/projects/porfolio.png",
-    alt: "Imagen de mi portafolio personal",
-    tags: [TAGS.ASTRO, TAGS.TAILWIND],
-  },
-  {
-    title: "FenixZone Timers",
-    description:
-      "Temporizadores en tiempo real para las casas de robo de un servidor de GTA San Andreas Multiplayer",
-    link: "https://fenixzone-timers.vercel.app/",
-    github: "https://github.com/hugomaartinez/fenixzone-timers",
-    image: "/projects/fenixzone-timers.png",
-    alt: "Imagen del proyecto de los temporizadores para las casas de robo de FenixZone",
-    tags: [TAGS.NEXT, TAGS.TAILWIND],
-  },
-  {
-    title: "Courtly",
-    description:
-      "Gestión integral de pistas deportivas. Reservas, estadísticas y administración en tiempo real.",
-    link: "https://app.hugomaartinez.dev",
-    image: "/projects/courtly.png",
-    alt: "Panel de control de la aplicación Courtly",
-    tags: [TAGS.NEXT, TAGS.TAILWIND],
-  },
-];
+const regularCount = PROJECTS.filter((project) => !project.featured).length;
 ---
 
-<div class="flex flex-col gap-y-16">
+<div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
   {
-    PROJECTS.map(({ image, alt, title, description, tags, link, github }) => (
-      <article class="flex flex-col space-x-0 space-y-8 group md:flex-row md:space-x-8 md:space-y-0">
-        <div class="w-full md:w-1/2">
-          <div class="relative flex flex-col items-center col-span-6 row-span-5 gap-8 transition duration-500 ease-in-out transform shadow-xl overflow-clip rounded-xl sm:rounded-xl md:group-hover:-translate-y-1 md:group-hover:shadow-[0_0_20px_rgba(255,255,255,0.1)] lg:border lg:border-gray-800 lg:hover:border-gray-700 lg:hover:bg-gray-800/60">
-            <img
-              alt={alt}
-              class="object-cover object-top w-full h-56 transition duration-500 sm:h-full md:scale-110 md:group-hover:scale-105"
-              loading="lazy"
-              src={image}
-            />
-          </div>
-        </div>
+    PROJECTS.map((project, index) => {
+      const url = project.link ?? project.github;
+      const host = project.link ? new URL(project.link).host : "github.com";
 
-        <div class="w-full md:w-1/2 md:max-w-lg">
-          <h3 class="text-2xl font-bold text-gray-800 dark:text-gray-100">
-            {title}
-          </h3>
-          <div class="flex flex-wrap mt-2">
-            <ul class="flex flex-row mb-2 gap-x-2">
-              {tags.map((tag) => (
-                <li>
-                  <span
-                    class={`flex gap-x-2 rounded-full text-xs ${tag.class} py-1 px-2 `}
-                  >
-                    <tag.icon class="size-4" />
-                    {tag.name}
-                  </span>
-                </li>
+      return (
+        <article
+          data-reveal
+          data-spotlight
+          style={`--delay: ${(index % 3) * 90}ms`}
+          class:list={[
+            "card group flex flex-col overflow-hidden",
+            // En tablet (2 columnas), la última tarjeta ocupa todo el ancho si queda sola
+            index === PROJECTS.length - 1 && regularCount % 2 === 1 && "sm:col-span-2 lg:col-span-1",
+            project.featured && "sm:col-span-2 md:grid md:grid-cols-[1.35fr_1fr] lg:col-span-3",
+          ]}
+        >
+          <a
+            href={url}
+            target="_blank"
+            rel="noopener"
+            tabindex="-1"
+            aria-hidden="true"
+            class:list={["block p-3", project.featured ? "md:p-4 md:pr-0" : "pb-0"]}
+          >
+            <div class="overflow-hidden rounded-xl border border-line/10 bg-bg">
+              <div class="flex items-center gap-1.5 border-b border-line/10 px-3 py-2">
+                <span class="size-2 rounded-full bg-line/20" />
+                <span class="size-2 rounded-full bg-line/20" />
+                <span class="size-2 rounded-full bg-line/20" />
+                <span class="ml-2 truncate rounded bg-line/[0.05] px-2 py-0.5 font-mono text-[10.5px] text-muted">
+                  {host}
+                </span>
+              </div>
+              <div class="aspect-[1200/713] overflow-hidden">
+                <img
+                  src={project.image}
+                  alt={project.alt}
+                  width="1200"
+                  height="713"
+                  loading="lazy"
+                  decoding="async"
+                  class="size-full object-cover object-top transition duration-700 ease-out group-hover:scale-[1.04]"
+                />
+              </div>
+            </div>
+          </a>
+
+          <div class:list={["flex flex-1 flex-col p-6", project.featured && "md:justify-center md:p-10"]}>
+            {project.featured && (
+              <p class="mb-3 font-mono text-[11px] uppercase tracking-[0.18em] text-accent">Proyecto destacado</p>
+            )}
+            <h3 class:list={["font-semibold tracking-tight", project.featured ? "text-2xl md:text-3xl" : "text-xl"]}>
+              {project.title}
+            </h3>
+            <p class="mt-2.5 text-pretty text-[15px] leading-relaxed text-muted">{project.description}</p>
+
+            <ul class="mt-5 flex flex-wrap gap-1.5" aria-label={`Tecnologías de ${project.title}`}>
+              {project.tags.map((tag) => (
+                <li class="chip">{tag}</li>
               ))}
             </ul>
 
-            <div class="mt-2 text-gray-700 dark:text-gray-400">
-              {description}
+            <div class="mt-auto flex flex-wrap gap-2 pt-6">
+              {project.link && (
+                <a href={project.link} target="_blank" rel="noopener" class="btn btn-ghost !px-3.5 !py-1.5">
+                  <Icon name="arrow-up-right" class="size-3.5" />
+                  Ver online<span class="sr-only">: {project.title}</span>
+                </a>
+              )}
+              {project.github && (
+                <a href={project.github} target="_blank" rel="noopener noreferrer" class="btn btn-ghost !px-3.5 !py-1.5">
+                  <Icon name="github" class="size-3.5" />
+                  Código<span class="sr-only"> de {project.title}</span>
+                </a>
+              )}
             </div>
-            <footer class="flex items-end justify-start mt-4 gap-x-4">
-              {github && (
-                <LinkButton href={github}>
-                  <GitHub class="size-6" />
-                  Code
-                </LinkButton>
-              )}
-              {link && (
-                <LinkButton href={link}>
-                  <Link class="size-4" />
-                  Preview
-                </LinkButton>
-              )}
-            </footer>
           </div>
-        </div>
-      </article>
-    ))
+        </article>
+      );
+    })
   }
 </div>
